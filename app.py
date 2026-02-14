@@ -5,18 +5,12 @@ from PIL import Image
 import json
 import os
 
-# ---------------------------------------------------
-# PAGE CONFIG
-# ---------------------------------------------------
 st.set_page_config(
     page_title="Plant Disease AI",
     page_icon="🌿",
     layout="wide"
 )
 
-# ---------------------------------------------------
-# SAFE FILE PATHS
-# ---------------------------------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 model = tf.keras.models.load_model(os.path.join(BASE_DIR,"model.h5"))
@@ -24,9 +18,8 @@ model = tf.keras.models.load_model(os.path.join(BASE_DIR,"model.h5"))
 class_indices = json.load(open(os.path.join(BASE_DIR,"class_indices.json")))
 class_indices = {int(k):v for k,v in class_indices.items()}
 
-# ---------------------------------------------------
-# REMEDIES DICTIONARY (FROM YOUR NOTEBOOK)
-# ---------------------------------------------------
+# REMEDIES DICTIONARY 
+
 remedies = {
     'Apple___Apple_scab': 'Remedy: Rake up and destroy infected leaves. Prune trees to improve air circulation. Apply fungicides like captan or sulfur.',
     'Apple___Black_rot': 'Remedy: Prune out dead or diseased branches. Remove and destroy mummified fruits. Apply appropriate fungicides during the growing season.',
@@ -71,18 +64,12 @@ remedies = {
 def get_remedy(disease):
     return remedies.get(disease,"Remedy information not available.")
 
-# ---------------------------------------------------
-# IMAGE PREPROCESS
-# ---------------------------------------------------
 def preprocess_image(image):
     img = image.resize((224,224))
     img_array = np.array(img)/255.0
     img_array = np.expand_dims(img_array,axis=0)
     return img_array
 
-# ---------------------------------------------------
-# PROFESSIONAL UI STYLE
-# ---------------------------------------------------
 st.markdown("""
 <style>
 
@@ -137,15 +124,9 @@ font-weight:700;
 </style>
 """,unsafe_allow_html=True)
 
-# ---------------------------------------------------
-# HEADER
-# ---------------------------------------------------
 st.markdown('<div class="title">🌿 AI Plant Disease Detection</div>',unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Deep Learning CNN trained on PlantVillage Dataset</div>',unsafe_allow_html=True)
 
-# ---------------------------------------------------
-# LAYOUT
-# ---------------------------------------------------
 col1,col2 = st.columns([1,1])
 
 with col1:
